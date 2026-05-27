@@ -27,6 +27,9 @@ import {
   Trash2,
 } from "lucide-react";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 function createId(prefix = "id") {
   if (window.crypto?.randomUUID) return window.crypto.randomUUID();
   return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
@@ -321,7 +324,7 @@ function App() {
         formData.append(key, typeof value === "string" ? value : JSON.stringify(value));
       });
 
-      const response = await fetch("http://localhost:5000/api/chat", {
+      const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         body: formData,
       });
@@ -534,9 +537,9 @@ function App() {
 
   const clearPdfSessionMemory = async () => {
     try {
-      await fetch(`http://localhost:5000/api/session/${encodeURIComponent(sessionId)}`, {
+      await fetch(`${API_BASE_URL}/api/session/${encodeURIComponent(sessionId)}`), {
         method: "DELETE",
-      });
+      };
     } catch (error) {
       console.error("Failed to clear PDF session:", error);
     }
@@ -582,7 +585,7 @@ function App() {
 
     if (chatToDelete?.sessionId) {
       try {
-        await fetch(`http://localhost:5000/api/session/${encodeURIComponent(chatToDelete.sessionId)}`, {
+        await fetch(`${API_BASE_URL}/api/session/${encodeURIComponent(chatToDelete.sessionId)}`, {
           method: "DELETE",
         });
       } catch (error) {
