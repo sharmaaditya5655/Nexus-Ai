@@ -337,7 +337,7 @@ function App() {
       return data.reply;
     }
 
-    const response = await fetch("http://localhost:5000/api/chat", {
+    const response = await fetch(`${API_BASE_URL}/api/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -396,7 +396,7 @@ function App() {
           id: Date.now() + 1,
           role: "ai",
           content:
-            "Backend se connect nahi ho pa raha. Please check karo ki server http://localhost:5000 par run ho raha hai.",
+            "Backend se connect nahi ho pa raha. Please check karo ki API server running hai.",
           mode: selectedMode,
         },
       ]);
@@ -537,9 +537,9 @@ function App() {
 
   const clearPdfSessionMemory = async () => {
     try {
-      await fetch(`${API_BASE_URL}/api/session/${encodeURIComponent(sessionId)}`), {
+      await fetch(`${API_BASE_URL}/api/session/${encodeURIComponent(sessionId)}`, {
         method: "DELETE",
-      };
+      });
     } catch (error) {
       console.error("Failed to clear PDF session:", error);
     }
