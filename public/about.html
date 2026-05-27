@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Nexus AI</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #0f172a;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(99,102,241,.22), transparent 28%),
+        radial-gradient(circle at 85% 18%, rgba(14,165,233,.16), transparent 30%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2ff 52%, #ffffff 100%);
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 28px 18px 70px;
+    }
+
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 16px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border: 1px solid rgba(226,232,240,.9);
+      border-radius: 24px;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 60px rgba(15,23,42,.07);
+    }
+
+
+    .topbar-right {
+  justify-content: flex-end;
+}
+
+    .brand-mini {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 900;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      box-shadow: 0 14px 34px rgba(79,70,229,.28);
+    }
+
+    .brand-mini h2 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mini p {
+      margin: 2px 0 0;
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    .back-btn {
+      border: 1px solid #c7d2fe;
+      background: #eef2ff;
+      color: #4f46e5;
+      border-radius: 999px;
+      padding: 10px 15px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .back-btn:hover {
+      background: #e0e7ff;
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      padding: 86px 0 58px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      border: 1px solid #c7d2fe;
+      color: #4f46e5;
+      background: rgba(238,242,255,.92);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .project-name {
+      margin: 0;
+      font-size: clamp(58px, 10vw, 118px);
+      line-height: .86;
+      letter-spacing: -0.09em;
+      font-weight: 950;
+    }
+
+    .project-name span {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 45%, #0ea5e9 100%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .tagline {
+      margin: 24px auto 0;
+      max-width: 760px;
+      color: #475569;
+      font-size: 20px;
+      line-height: 1.75;
+    }
+
+    .deep-line {
+      margin: 36px auto 0;
+      max-width: 860px;
+      border-radius: 34px;
+      padding: 28px;
+      color: #fff;
+      background: #0f172a;
+      box-shadow: 0 30px 90px rgba(15,23,42,.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .deep-line::before {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -80px;
+      top: -100px;
+      border-radius: 999px;
+      background: rgba(79,70,229,.8);
+      filter: blur(80px);
+    }
+
+    .deep-line p {
+      position: relative;
+      margin: 0;
+      font-size: clamp(22px, 3vw, 34px);
+      line-height: 1.28;
+      font-weight: 900;
+      letter-spacing: -0.055em;
+    }
+
+    .section {
+      margin-top: 34px;
+      border-radius: 36px;
+      padding: 30px;
+      background: rgba(255,255,255,.84);
+      border: 1px solid rgba(226,232,240,.95);
+      box-shadow: 0 24px 80px rgba(15,23,42,.06);
+    }
+
+    .section-label {
+      display: inline-flex;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .problem .section-label {
+      background: #fff7ed;
+      color: #ea580c;
+      border: 1px solid #fed7aa;
+    }
+
+    .solution .section-label {
+      background: #eef2ff;
+      color: #4f46e5;
+      border: 1px solid #c7d2fe;
+    }
+
+    .founder .section-label {
+      background: rgba(255,255,255,.15);
+      color: #ddd6fe;
+      border: 1px solid rgba(255,255,255,.22);
+    }
+
+    .section h2 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -0.07em;
+    }
+
+    .section-intro {
+      margin: 16px 0 0;
+      max-width: 850px;
+      color: #475569;
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .card {
+      border-radius: 24px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+    }
+
+    .problem .card {
+      background: #fffaf5;
+      border-color: #fed7aa;
+    }
+
+    .solution .card {
+      background: #f8fafc;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      letter-spacing: -0.03em;
+    }
+
+    .card p {
+      margin: 0;
+      color: #64748b;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .solution-statement {
+      margin-top: 24px;
+      border-radius: 28px;
+      padding: 26px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #fff;
+      box-shadow: 0 24px 70px rgba(79,70,229,.28);
+    }
+
+    .solution-statement h3 {
+      margin: 0 0 10px;
+      font-size: 26px;
+      letter-spacing: -0.055em;
+    }
+
+    .solution-statement p {
+      margin: 0;
+      color: #eef2ff;
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    .founder {
+      background: #0f172a;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .founder::before {
+      content: "";
+      position: absolute;
+      inset: auto -120px -130px auto;
+      width: 330px;
+      height: 330px;
+      border-radius: 999px;
+      background: rgba(79,70,229,.72);
+      filter: blur(85px);
+    }
+
+    .founder-content {
+      position: relative;
+      display: grid;
+      grid-template-columns: .75fr 1.25fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .founder-name {
+      margin-top: 10px;
+      font-size: clamp(38px, 5vw, 64px);
+      line-height: .95;
+      letter-spacing: -0.08em;
+      font-weight: 950;
+    }
+
+    .founder p {
+      color: #cbd5e1;
+      line-height: 1.8;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .topbar {
+  display: none;
+}
+
+    .floating-back-btn {
+  position: fixed;
+  top: 22px;
+  right: 28px;
+  z-index: 50;
+  border: 1px solid #c7d2fe;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  color: #4f46e5;
+  border-radius: 999px;
+  padding: 11px 18px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 14px 40px rgba(79, 70, 229, 0.12);
+  transition: 0.2s ease;
+}
+
+.floating-back-btn:hover {
+  background: #eef2ff;
+  border-color: #818cf8;
+  transform: translateY(-1px);
+}
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 850;
+      color: #e0e7ff;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @media (max-width: 820px) {
+      .cards,
+      .founder-content {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 22px;
+        border-radius: 28px;
+      }
+
+.hero {
+  padding: 54px 0 58px;
+  text-align: center;
+}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="container">
+<button class="floating-back-btn" onclick="location.href='/'">
+  Back to Workspace
+</button>
+
+      <section class="hero">
+        <div class="eyebrow">Project</div>
+        <h1 class="project-name"><span>Nexus AI</span></h1>
+        <p class="tagline">
+          An intelligent learning workspace for students — built to turn confusion into clarity, scattered material into direction, and ordinary answers into real understanding.
+        </p>
+
+        <div class="deep-line">
+          <p>“The future of learning is not about giving students more content. It is about giving them the right path through the content.”</p>
+        </div>
+      </section>
+
+      <section class="section problem">
+        <div class="section-label">Problem Section</div>
+        <h2>Students are surrounded by information, but still struggle to learn.</h2>
+        <p class="section-intro">
+          The real problem is not the absence of study material. The real problem is scattered material, generic explanations, unclear exam priority, and no system that checks whether the student actually understood.
+        </p>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Scattered Study Material</h3>
+            <p>Students have PDFs, notes, screenshots, syllabus, PYQs, and teacher content spread across different places. They waste time finding what matters.</p>
+          </div>
+          <div class="card">
+            <h3>Generic AI Answers</h3>
+            <p>Most AI tools answer broadly. They do not naturally focus on a specific syllabus, exam pattern, college context, or student weakness.</p>
+          </div>
+          <div class="card">
+            <h3>One Explanation Is Not Enough</h3>
+            <p>Many students need the same concept explained in multiple ways — simple, visual, analogy-based, step-by-step, or exam-style.</p>
+          </div>
+          <div class="card">
+            <h3>No Learning Loop</h3>
+            <p>Getting an answer is not the same as understanding. Students need a system that teaches, checks, re-teaches, and builds confidence.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section solution">
+        <div class="section-label">Solution Statement</div>
+        <h2>Nexus AI is built to make AI feel like a real study companion, not a wrapper.</h2>
+        <p class="section-intro">
+          Nexus AI brings chat, notes, exam preparation, document search, coding help, visual explanation, and tutor-style re-teaching into one clean workspace.
+        </p>
+
+        <div class="solution-statement">
+          <h3>What we solve</h3>
+          <p>
+            Nexus AI helps students upload their syllabus, notes, and PYQs, then converts them into important questions, revision notes, study plans, source-based answers, coding explanations, and multiple teaching styles until the topic becomes clear.
+          </p>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Deep Search with RAG</h3>
+            <p>Instead of blindly reading everything, Nexus AI searches relevant chunks from uploaded files and gives focused, source-based answers.</p>
+          </div>
+          <div class="card">
+            <h3>Exam Mode</h3>
+            <p>Students can generate important questions, study plans, last-day revision checklists, and exam strategies from their own syllabus and notes.</p>
+          </div>
+          <div class="card">
+            <h3>Tutor Mode</h3>
+            <p>If a student does not understand, Nexus AI teaches the same topic again using a new style: simple, visual, analogy, step-by-step, or exam-ready.</p>
+          </div>
+          <div class="card">
+            <h3>Student-First Workspace</h3>
+            <p>Everything stays in one place: conversations, PDFs, modes, notes, explanations, and learning flow.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section founder">
+        <div class="founder-content">
+          <div>
+            <div class="section-label">About Me</div>
+            <div class="founder-name">Aditya Sharma</div>
+            <div class="pill-row">
+              <span class="pill">Founder of Nexus AI</span>
+            </div>
+          </div>
+          <div>
+            <p>
+              I am building Nexus AI with one clear purpose: to make studying feel less confusing and more guided. I believe an AI product for students should not just answer questions; it should understand the student’s exam pressure, explain concepts in different ways, and help them move from doubt to confidence.
+            </p>
+            <br />
+            <p>
+              Nexus AI is not just a project for me. It is a step toward building a learning system where every student gets a patient tutor, a study planner, and a revision partner inside one workspace.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <p class="footer">Nexus AI — shaping knowledge into understanding.</p>
+    </div>
+  </main>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a01f65c0aa04b2c8',t:'MTc3OTgyNTk1NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

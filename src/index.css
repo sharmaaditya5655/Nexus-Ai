@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+::selection {
+  background: #c7d2fe;
+  color: #111827;
+}
+
+/* Nexus AI Markdown Styling */
+.nexus-markdown {
+  color: #334155;
+}
+
+.nexus-markdown h1 {
+  color: #0f172a;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.nexus-markdown h2 {
+  color: #1e293b;
+  font-size: 1.05rem;
+  font-weight: 750;
+  margin-top: 1.1rem;
+  margin-bottom: 0.45rem;
+}
+
+.nexus-markdown h3 {
+  color: #334155;
+  font-size: 0.98rem;
+  font-weight: 700;
+  margin-top: 0.8rem;
+  margin-bottom: 0.35rem;
+}
+
+.nexus-markdown p {
+  margin-top: 0.45rem;
+  margin-bottom: 0.45rem;
+}
+
+.nexus-markdown ul,
+.nexus-markdown ol {
+  margin-top: 0.45rem;
+  margin-bottom: 0.65rem;
+  padding-left: 1.25rem;
+}
+
+.nexus-markdown li {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.nexus-markdown strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.nexus-markdown code {
+  background: #f1f5f9;
+  color: #4f46e5;
+  padding: 0.12rem 0.35rem;
+  border-radius: 0.35rem;
+  font-size: 0.88em;
+}
+
+.nexus-markdown code::before,
+.nexus-markdown code::after {
+  content: "" !important;
+}
+
+.nexus-markdown pre {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0;
+  padding: 1rem;
+  border-radius: 0.9rem;
+  overflow-x: auto;
+  margin-top: 0.7rem;
+  margin-bottom: 0.9rem;
+}
+
+.nexus-markdown pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+}
+
+.nexus-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+}
+
+.nexus-markdown th {
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.nexus-markdown th,
+.nexus-markdown td {
+  border: 1px solid #e2e8f0;
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+}
+
+.nexus-markdown table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.88rem;
+  white-space: normal;
+}
+
+.nexus-markdown thead {
+  background: #f8fafc;
+}
+
+.nexus-markdown th {
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 700;
+  min-width: 120px;
+}
+
+.nexus-markdown th,
+.nexus-markdown td {
+  border: 1px solid #e2e8f0;
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.nexus-markdown td {
+  color: #334155;
+}
