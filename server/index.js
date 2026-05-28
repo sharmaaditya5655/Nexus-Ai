@@ -3,6 +3,8 @@ const cors = require("cors");
 const multer = require("multer");
 const pdfParse = require("pdf-parse");
 const crypto = require("crypto");
+const { createClient } = require("@supabase/supabase-js");
+const webpush = require("web-push");
 require("dotenv").config();
 
 const app = express();
@@ -13,6 +15,22 @@ app.use(express.json({ limit: "10mb" }));
 const PORT = process.env.PORT || 5000;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.1-8b-instant";
+
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY;
+const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY;
+const VAPID_SUBJECT = process.env.VAPID_SUBJECT || "mailto:test@example.com";
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
+const adminSupabase =
+  SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY
+    ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+    : null;
+
+if (VAPID_PUBLIC_KEY && VAPID_PRIVATE_KEY) {
+  webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
+}
 
 // In-memory session store. Resets when backend restarts.
 const documentSessions = new Map();
@@ -1694,7 +1712,135 @@ Explain differently and simply.`,
 }
 
 app.get("/", (req, res) => {
-  res.send("Nexus AI backend is running with Groq + Simple RAG v1");
+  res.send("Nexus AI backend is running with Groq + Simple RAG v1 + Mentor Reminders");
+});
+
+app.get("/api/push/public-key", (req, res) => {
+  res.json({ publicKey: VAPID_PUBLIC_KEY || "" });
+});
+
+app.post("/api/push/subscribe", async (req, res) => {
+  try {
+    if (!adminSupabase) {
+      return res.status(500).json({ success: false, error: "Supabase admin client is not configured." });
+    }
+
+    const { userId, subscription } = req.body;
+
+    if (!userId || !subscription?.endpoint) {
+      return res.status(400).json({ success: false, error: "userId and subscription are required." });
+    }
+
+    const { error } = await adminSupabase.from("push_subscriptions").upsert(
+      {
+        user_id: userId,
+        endpoint: subscription.endpoint,
+        subscription,
+      },
+      { onConflict: "endpoint" }
+    );
+
+    if (error) throw error;
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Push subscribe error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+function getIndiaTimeHHMM() {
+  const formatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  return formatter.format(new Date());
+}
+
+function getIndiaDateString() {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
+  return formatter.format(new Date());
+}
+
+app.get("/api/reminders/check", async (req, res) => {
+  try {
+    if (!adminSupabase) {
+      return res.status(500).json({ success: false, error: "Supabase admin client is not configured." });
+    }
+
+    if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
+      return res.status(500).json({ success: false, error: "VAPID keys are missing." });
+    }
+
+    const currentTime = getIndiaTimeHHMM();
+    const today = getIndiaDateString();
+
+    const { data: reminders, error: reminderError } = await adminSupabase
+      .from("mentor_reminders")
+      .select("*")
+      .eq("enabled", true)
+      .eq("reminder_time", currentTime);
+
+    if (reminderError) throw reminderError;
+
+    const dueReminders = (reminders || []).filter(
+      (reminder) => reminder.last_sent_date !== today
+    );
+
+    let sent = 0;
+    let failed = 0;
+
+    for (const reminder of dueReminders) {
+      const { data: subscriptions, error: subError } = await adminSupabase
+        .from("push_subscriptions")
+        .select("*")
+        .eq("user_id", reminder.user_id);
+
+      if (subError) {
+        failed += 1;
+        continue;
+      }
+
+      const payload = JSON.stringify({
+        title: "Nexus AI Mentor Reminder",
+        body: reminder.message || "Time to continue your learning roadmap in Mentor AI.",
+        url: FRONTEND_URL,
+      });
+
+      for (const sub of subscriptions || []) {
+        try {
+          await webpush.sendNotification(sub.subscription, payload);
+          sent += 1;
+        } catch (error) {
+          console.error("Push send failed:", error.message);
+          failed += 1;
+
+          if (error.statusCode === 404 || error.statusCode === 410) {
+            await adminSupabase.from("push_subscriptions").delete().eq("id", sub.id);
+          }
+        }
+      }
+
+      await adminSupabase
+        .from("mentor_reminders")
+        .update({ last_sent_date: today, updated_at: new Date().toISOString() })
+        .eq("id", reminder.id);
+    }
+
+    res.json({ success: true, currentTime, due: dueReminders.length, sent, failed });
+  } catch (error) {
+    console.error("Reminder check error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 app.get("/api/session/:sessionId/files", (req, res) => {

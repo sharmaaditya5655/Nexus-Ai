@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Auth from "./Auth";
 import { supabase } from "./lib/supabase";
+import MentorWorkspace from "./MentorWorkspace";
 import {
   Brain,
   Menu,
@@ -77,6 +78,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [cloudLoaded, setCloudLoaded] = useState(false);
+  const [currentWorkspace, setCurrentWorkspace] = useState("chat");
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMode, setActiveMode] = useState("");
@@ -689,6 +691,15 @@ function App() {
     );
   }
 
+  if (currentWorkspace === "mentor") {
+    return (
+      <MentorWorkspace
+        user={user}
+        onBack={() => setCurrentWorkspace("chat")}
+      />
+    );
+  }
+
   return (
     <div className="h-screen overflow-hidden bg-slate-50 text-slate-900 flex">
       <aside
@@ -788,7 +799,13 @@ function App() {
               </button>
             </div>
 
-            <Settings size={15} className="text-slate-600 shrink-0" />
+            <button
+              onClick={() => setCurrentWorkspace("mentor")}
+              className="text-slate-500 hover:text-indigo-400 transition"
+              title="Open Mentor AI"
+            >
+              <Settings size={15} className="shrink-0" />
+            </button>
           </div>
         </div>
       </aside>
